@@ -1,8 +1,10 @@
+import json
 from collections.abc import Generator
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
-import json
+
+import pytest
 
 
 @pytest.fixture(scope="session")
