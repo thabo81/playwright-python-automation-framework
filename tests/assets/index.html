@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Automation Demo</title></head>
+<body>
+  <main>
+    <h1 data-testid="page-title">Playwright Automation Demo</h1>
+    <p data-testid="user-name">Loading...</p>
+    <p data-testid="user-role">Loading...</p>
+  </main>
+  <script>
+    fetch("/api/user")
+      .then(response => response.json())
+      .then(user => {
+        document.querySelector('[data-testid="user-name"]').textContent = user.name;
+        document.querySelector('[data-testid="user-role"]').textContent = user.role;
+      });
+  </script>
+</body>
+</html>
