@@ -5,6 +5,9 @@ from pathlib import Path
 from threading import Thread
 
 import pytest
+from playwright.sync_api import Page
+
+from pages.home_page import HomePage
 
 
 @pytest.fixture(scope="session")
@@ -50,3 +53,10 @@ def test_app_url() -> Generator[str, None, None]:
         server.shutdown()
         thread.join()
         server.server_close()
+
+@pytest.fixture
+def home_page(page: Page) -> HomePage:
+    """Create a HomePage object for the current test."""
+    # Pytest provides the Playwright page fixture.
+    # We wrap that page in our HomePage Page Object.
+    return HomePage(page)
