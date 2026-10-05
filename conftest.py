@@ -7,6 +7,7 @@ from threading import Thread
 import pytest
 from playwright.sync_api import Page
 
+from pages.dashboard_page import DashboardPage
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 
@@ -158,3 +159,67 @@ def login_page(page: Page) -> LoginPage:
     # Reuse the browser page that Pytest created and wrap it
     # with the LoginPage Page Object.
     return LoginPage(page)
+
+
+@pytest.fixture(scope="session")
+def authenticated_storage_state(
+    browser,
+    test_app_url: str,
+    tmp_path_factory: pytest.TempPathFactory,
+) -> Path:
+    """Create and persist authenticated browser state for the test session."""
+    # Store the authentication state outside the repository working tree
+    # so session credentials are never accidentally committed.
+    state_directory = tmp_path_factory.mktemp("playwright-auth")
+    state_path = state_directory / "auth_state.json"
+
+    # Create an isolated browser context used only to establish authentication.
+    context = browser.new_context()
+    page = context.new_page()
+
+    try:
+        # Open the application's login page.
+        page.goto(f"{test_app_url}/login")
+
+        # Fill in the known valid test credentials.
+        page.get_by_label("Username").fill("testuser")
+        page.get_by_label("Password").fill("Password123")
+
+        # Submit the login form and wait for the dashboard.
+        page.get_by_role("button", name="Login").click()
+        page.wait_for_url("**/dashboard")
+
+        # Save cookies/local storage so later tests can reuse the session.
+        context.storage_state(path=state_path)
+    finally:
+        # Always close the temporary authentication context.
+        context.close()
+
+    return state_path
+
+
+@pytest.fixture
+def authenticated_page(
+    browser,
+    authenticated_storage_state: Path,
+) -> Generator[Page, None, None]:
+    """Create a browser page using the saved authenticated state."""
+    # Create a fresh context from the previously saved authentication state.
+    context = browser.new_context(
+        storage_state=authenticated_storage_state,
+    )
+    page = context.new_page()
+
+    try:
+        # Give the test a fully configured authenticated page.
+        yield page
+    finally:
+        # Close the context after the test to keep tests isolated.
+        context.close()
+
+
+@pytest.fixture
+def dashboard_page(authenticated_page: Page) -> DashboardPage:
+    """Create a DashboardPage object using an authenticated page."""
+    # Wrap the authenticated Playwright page in the Dashboard Page Object.
+    return DashboardPage(authenticated_page)
