@@ -163,6 +163,13 @@ Generate Test Report
 Upload Artifacts
 ```
 
+## Learning Documentation
+
+Use these references while working through the framework:
+
+* [Playwright & Pytest Method Reference](docs/PLAYWRIGHT_METHOD_REFERENCE.md) — methods already used, methods planned for later stages, and quick recall by task.
+* [GitHub Actions Setup Guide](docs/GITHUB_ACTIONS_GUIDE.md) — step-by-step instructions for writing, understanding, running, and debugging CI workflows.
+
 ## Learning Roadmap
 
 * [x] Set up Python environment
