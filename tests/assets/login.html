@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login | Automation Demo</title>
+</head>
+<body>
+    <main>
+        <h1>Login</h1>
+
+        <form id="login-form">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text">
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password">
+
+            <button type="submit">Login</button>
+
+            <p data-testid="login-error" role="alert"></p>
+        </form>
+    </main>
+
+    <script>
+        const form = document.getElementById("login-form");
+        const errorMessage = document.querySelector('[data-testid="login-error"]');
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            errorMessage.textContent = "";
+
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: document.getElementById("username").value,
+                    password: document.getElementById("password").value
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                window.location.href = "/dashboard";
+                return;
+            }
+
+            errorMessage.textContent = result.detail;
+        });
+    </script>
+</body>
+</html>
