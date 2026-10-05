@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Playwright test artifacts and authentication state
+test-results/
+playwright-report/
+tests/.auth/
