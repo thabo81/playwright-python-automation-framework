@@ -166,17 +166,17 @@ Upload Artifacts
 ## Learning Roadmap
 
 * [x] Set up Python environment
-* [ ] Set up Playwright with Pytest
-* [ ] Learn Playwright locators and assertions
-* [ ] Build reusable Pytest fixtures
-* [ ] Implement Page Object Model
-* [ ] Add UI test scenarios
-* [ ] Add API tests
-* [ ] Implement API mocking and request interception
-* [ ] Add authentication and reusable test state
+* [x] Set up Playwright with Pytest
+* [x] Learn Playwright locators and assertions
+* [x] Build reusable Pytest fixtures
+* [x] Implement Page Object Model
+* [x] Add UI test scenarios
+* [x] Add API tests
+* [x] Implement API mocking and request interception
+* [x] Add authentication and reusable test state
 * [ ] Add parallel execution
 * [ ] Add reporting and tracing
-* [ ] Add GitHub Actions CI/CD
+* [ ] Add GitHub Actions CI/CD and verify successful workflow execution
 * [ ] Build a complete end-to-end automation project
 
 ## Testing Strategy
