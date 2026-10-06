@@ -322,3 +322,45 @@ https://allurereport.org/docs/v3/install/
 
 Allure GitHub Actions:
 https://allurereport.org/docs/integrations-github-action/
+
+## 14. Viewing Allure in GitHub Codespaces
+
+When using GitHub Codespaces, `allure open` may start a local server on a port that is not forwarded correctly to the browser.
+
+Use the generated static report with Python's built-in HTTP server instead:
+
+```bash
+npx allure generate ./allure-results
+python -m http.server 8080 --bind 0.0.0.0 --directory allure-report
+```
+
+Then open the Codespaces **Ports** panel and forward port `8080`.
+
+Use **Open in Browser** for the forwarded port.
+
+### Why this works
+
+```text
+allure-results/
+      ↓
+Allure Report 3
+      ↓
+allure-report/
+      ↓
+Python HTTP server
+      ↓
+0.0.0.0:8080
+      ↓
+Codespaces forwarded port
+      ↓
+Browser
+```
+
+Keep the terminal running while viewing the report. Stop the server with:
+
+```text
+Ctrl+C
+```
+
+This approach is useful specifically for Codespaces because the report is a static HTML application served through a known forwarded port.
+
