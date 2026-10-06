@@ -286,3 +286,38 @@ https://playwright.dev/python/docs/locators
 https://playwright.dev/python/docs/api/class-page
 https://playwright.dev/python/docs/api/class-locator
 https://playwright.dev/python/docs/ci
+
+## 13. Parallel Test Execution (New)
+
+Parallel execution is provided by `pytest-xdist`.
+
+| Command | What it does |
+|---|---|
+| `pytest --numprocesses 2` | Runs tests across two worker processes. |
+| `pytest -n 2` | Short form of `--numprocesses 2`. |
+| `pytest --numprocesses auto` | Lets xdist determine the worker count from available CPU resources. |
+| `pytest -n 0` | Disables xdist and runs in the main process. |
+
+### Why worker isolation matters
+
+Each worker is a separate pytest process. Fixtures with session scope are therefore created per worker, not globally across all workers.
+
+For this project that means our local test server and authentication state must not depend on one shared mutable process or fixed port.
+
+Recommended learning experiment:
+
+```bash
+pytest
+pytest --numprocesses 2
+```
+
+Compare:
+
+- number of workers
+- total runtime
+- test results
+- fixture behavior
+- whether tests remain deterministic
+
+Playwright's Python documentation recommends using `pytest-xdist` and the `--numprocesses` option for parallel test execution. 
+
