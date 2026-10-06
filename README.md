@@ -170,6 +170,14 @@ Use these references while working through the framework:
 * [Playwright & Pytest Method Reference](docs/PLAYWRIGHT_METHOD_REFERENCE.md) — methods already used, methods planned for later stages, and quick recall by task.
 * [GitHub Actions Setup Guide](docs/GITHUB_ACTIONS_GUIDE.md) — step-by-step instructions for writing, understanding, running, and debugging CI workflows.
 
+## Reporting & Test Evidence
+
+The framework uses **Allure Report** for structured test reporting and **Playwright tracing** for browser-level failure diagnostics.
+
+* [Allure Reporting Guide](docs/ALLURE_REPORTING_GUIDE.md) — how Allure results are generated, reported, and used in CI.
+* [Playwright & Pytest Method Reference](docs/PLAYWRIGHT_METHOD_REFERENCE.md) — method lookup and quick recall.
+* [GitHub Actions Setup Guide](docs/GITHUB_ACTIONS_GUIDE.md) — CI workflow construction and debugging.
+
 ## Learning Roadmap
 
 * [x] Set up Python environment
