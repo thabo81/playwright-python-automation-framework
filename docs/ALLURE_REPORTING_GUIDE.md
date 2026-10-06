@@ -94,7 +94,7 @@ Allure's current installation documentation recommends Node.js and the `allure` 
 After running the tests:
 
 ```bash
-allure generate allure-results --clean -o allure-report
+allure generate ./allure-results
 ```
 
 This converts the raw Allure result files into an HTML report directory:
@@ -112,7 +112,7 @@ allure-report/
 Use:
 
 ```bash
-allure open allure-report
+allure open ./allure-report
 ```
 
 This serves the generated report so it can be viewed in a browser.
