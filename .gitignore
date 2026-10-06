@@ -221,3 +221,7 @@ __marimo__/
 test-results/
 playwright-report/
 tests/.auth/
+
+# Allure test reporting output
+allure-results/
+allure-report/
