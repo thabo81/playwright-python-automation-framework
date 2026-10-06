@@ -190,7 +190,7 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Implement API mocking and request interception
 * [x] Add authentication and reusable test state
 * [x] Add parallel execution
-* [ ] Add reporting and tracing
+* [x] Add reporting and tracing
 * [ ] Add GitHub Actions CI/CD and verify successful workflow execution
 * [ ] Build a complete end-to-end automation project
 
