@@ -5,6 +5,12 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+  workflow_dispatch:
+
+# Prevent multiple runs for the same branch/PR from consuming runners at once.
+concurrency:
+  group: playwright-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -23,10 +29,12 @@ jobs:
         uses: actions/checkout@v6
 
       # Install the Python runtime used by this CI job.
+      # Cache pip downloads so subsequent runs can install dependencies faster.
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+          cache: "pip"
 
       # Install Node.js because Allure Report 3 is distributed through npm.
       - name: Set up Node.js
@@ -44,7 +52,7 @@ jobs:
       - name: Install Playwright Chromium and system dependencies
         run: python -m playwright install --with-deps chromium
 
-      # Install the Allure Report 3 CLI used to build the HTML report.
+      # Install the Allure Report CLI used to build the HTML report.
       - name: Install Allure Report CLI
         run: npm install -g allure
 
@@ -61,7 +69,7 @@ jobs:
       # Upload the generated HTML report for inspection in GitHub Actions.
       - name: Upload Allure report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: allure-report
           path: allure-report/
@@ -70,7 +78,7 @@ jobs:
       # Upload raw Allure result files and Playwright diagnostics.
       - name: Upload test evidence
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: test-evidence
           path: |
