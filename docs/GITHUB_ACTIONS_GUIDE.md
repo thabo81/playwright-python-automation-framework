@@ -44,6 +44,11 @@ Continuous integration:
 
 The CI environment is therefore an independent validation environment.
 
+For this repository, the workflow also uses:
+- `workflow_dispatch` for manual runs.
+- `concurrency` to cancel superseded runs for the same branch or pull request.
+- pip caching through `actions/setup-python`.
+
 ---
 
 # 2. Where the Workflow File Goes
@@ -81,6 +86,7 @@ Write:
         branches: ["main"]
       pull_request:
         branches: ["main"]
+      workflow_dispatch:
 
 Meaning:
 
@@ -297,7 +303,7 @@ Use:
 
     - name: Upload Playwright test results
       if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: playwright-test-results
         path: test-results/
@@ -369,7 +375,7 @@ A modern reference workflow for this repository is:
           # Preserve test diagnostics.
           - name: Upload Playwright test results
             if: ${{ !cancelled() }}
-            uses: actions/upload-artifact@v5
+            uses: actions/upload-artifact@v6
             with:
               name: playwright-test-results
               path: test-results/
@@ -426,6 +432,18 @@ Add them in this order:
     artifacts
 
 The order matters because each step prepares the environment for the next one.
+
+For the current repository, the production workflow order is:
+
+    checkout
+    Python + pip cache
+    Node.js
+    Python dependencies
+    Playwright + Chromium dependencies
+    Allure CLI
+    pytest
+    Allure report
+    artifact upload
 
 ---
 
@@ -622,3 +640,21 @@ https://playwright.dev/python/docs/ci-intro
 
 GitHub Actions:
 https://docs.github.com/actions
+
+
+---
+
+# 23. Current CI Verification
+
+The repository has a verified successful GitHub Actions run using the current Playwright workflow.
+
+Result:
+
+    7 passed
+
+The successful job also completed:
+- Allure report generation
+- Allure report artifact upload
+- test evidence artifact upload
+
+The workflow is therefore no longer only a configuration exercise; it has been executed successfully on a clean GitHub-hosted runner.
