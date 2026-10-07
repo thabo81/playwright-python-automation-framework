@@ -137,13 +137,18 @@ pytest --browser chromium
 
 ## CI/CD
 
-GitHub Actions will be used to automatically:
+GitHub Actions now automatically:
 
-1. Install Python dependencies.
-2. Install Playwright browsers.
-3. Execute the automated test suite.
-4. Generate test results.
-5. Preserve relevant test artifacts such as reports and traces.
+1. Installs Python dependencies with pip caching.
+2. Installs Chromium and required Linux system dependencies.
+3. Executes the Playwright test suite in parallel.
+4. Generates an Allure HTML report.
+5. Uploads the Allure report and raw test evidence as workflow artifacts.
+6. Runs for pushes and pull requests targeting `main`.
+7. Supports manual execution through `workflow_dispatch`.
+8. Cancels superseded runs for the same branch or pull request.
+
+Verified CI result: the latest successful workflow executed **7 tests with 7 passed**.
 
 Target workflow:
 
@@ -191,7 +196,8 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Add authentication and reusable test state
 * [x] Add parallel execution
 * [x] Add reporting and tracing
-* [ ] Add GitHub Actions CI/CD and verify successful workflow execution
+* [x] Add GitHub Actions CI/CD and verify successful workflow execution
+* [ ] Integrate BDD / Gherkin with Playwright
 * [ ] Build a complete end-to-end automation project
 
 ## Testing Strategy
