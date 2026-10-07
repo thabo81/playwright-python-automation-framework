@@ -16,6 +16,8 @@ The goal is to build a maintainable, production-style automation framework rathe
 * REST API testing
 * API mocking
 * Page Object Model (POM)
+* Pytest-BDD / Gherkin
+* Allure Report
 
 ## What This Project Covers
 
@@ -51,10 +53,47 @@ The framework uses the Page Object Model to separate:
 
 This improves readability, maintainability, and reusability as the test suite grows.
 
+### BDD / Gherkin
+
+BDD will be added as the next learning milestone using **Cucumber-style Gherkin scenarios** with the Python testing ecosystem.
+
+The planned BDD layer will demonstrate:
+
+* Feature files written in Gherkin
+* Given / When / Then step definitions
+* Business-readable scenarios
+* BDD integration with existing Playwright Page Objects
+* Reusable Pytest fixtures
+* Allure reporting for BDD scenarios
+* Running BDD scenarios through GitHub Actions
+
+The intended architecture is:
+
+```text
+Gherkin Feature
+      ↓
+Step Definitions
+      ↓
+Pytest Fixtures
+      ↓
+Page Objects
+      ↓
+Playwright
+      ↓
+Browser
+```
+
+BDD will complement the existing Pytest tests rather than replace technical/API-level tests.
+
+
 ## Planned Project Structure
 
 ```text
 playwright-python-automation-framework/
+├── features/
+│   ├── login.feature
+│   └── dashboard.feature
+├── step_defs/
 ├── tests/
 │   ├── ui/
 │   └── api/
@@ -71,6 +110,8 @@ playwright-python-automation-framework/
     └── workflows/
         └── tests.yml
 ```
+
+> The BDD directories above represent the planned architecture and will be added during the BDD integration milestone.
 
 ## Getting Started
 
@@ -198,6 +239,8 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Add reporting and tracing
 * [x] Add GitHub Actions CI/CD and verify successful workflow execution
 * [ ] Integrate BDD / Gherkin with Playwright
+* [ ] Add Cucumber-style feature scenarios and step definitions
+* [ ] Run BDD scenarios through GitHub Actions
 * [ ] Build a complete end-to-end automation project
 
 ## Testing Strategy
@@ -213,6 +256,8 @@ The framework will apply core software testing principles such as:
 * API testing
 * Risk-based test coverage
 
+BDD will add a business-readable specification layer on top of these technical testing practices.
+
 ## Quality Goals
 
 This project focuses on:
@@ -225,12 +270,13 @@ This project focuses on:
 * Useful failure diagnostics
 * CI-friendly execution
 * Clean and typed Python code
+* Business-readable BDD scenarios
 
 ## Portfolio Purpose
 
 This repository is part of my **SDET portfolio** and demonstrates practical experience with:
 
-**Python + Pytest + Playwright + UI Automation + API Testing + Mocking + POM + CI/CD**
+**Python + Pytest + Playwright + BDD/Gherkin + UI Automation + API Testing + Mocking + POM + CI/CD + Allure**
 
 The repository will evolve as new automation concepts and projects are implemented.
 
