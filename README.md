@@ -238,8 +238,8 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Add parallel execution
 * [x] Add reporting and tracing
 * [x] Add GitHub Actions CI/CD and verify successful workflow execution
-* [ ] Integrate BDD / Gherkin with Playwright
-* [ ] Add Cucumber-style feature scenarios and step definitions
+* [x] Integrate BDD / Gherkin with Playwright
+* [x] Add the first Cucumber-style feature scenario and step definitions
 * [ ] Run BDD scenarios through GitHub Actions
 * [ ] Build a complete end-to-end automation project
 
