@@ -1,9 +1,15 @@
 from pathlib import Path
 
-# Import the step definitions so pytest-bdd registers the Given/When/Then
-# bindings before the Gherkin scenarios are generated.
-from tests.bdd.step_defs import login_steps  # noqa: F401
 from pytest_bdd import scenarios
+
+# Import the individual step functions into this test module.
+# pytest-bdd discovers decorated step functions through the module's
+# fixture namespace, so importing the functions explicitly is important.
+from tests.bdd.step_defs.login_steps import (  # noqa: F401
+    user_is_on_login_page,
+    user_logs_in_with_valid_credentials,
+    user_should_reach_dashboard,
+)
 
 
 # Resolve the feature file from the repository root rather than relying
