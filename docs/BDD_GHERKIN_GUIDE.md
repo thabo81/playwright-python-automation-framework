@@ -49,6 +49,8 @@ The matching Python implementation lives in:
 
 The step definitions intentionally call the existing `LoginPage` Page Object instead of directly using selectors.
 
+The step functions must be imported into the scenario test module so pytest-bdd can discover the decorated Given/When/Then bindings. Importing only the step-definition module object is not sufficient for this arrangement.
+
 This keeps the responsibilities separated:
 
 | Layer | Responsibility |
