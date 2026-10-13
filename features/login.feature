@@ -10,12 +10,13 @@ Feature: User login
     When I log in with valid credentials
     Then I should be redirected to the dashboard
 
-  Scenario: Invalid password is rejected
+  @negative
+  Scenario Outline: Login rejects invalid credentials
     Given I am on the login page
-    When I log in with an invalid password
-    Then I should see the login error "Invalid username or password"
+    When I attempt to log in with username "<username>" and password "<password>"
+    Then I should see the login error "<expected_message>"
 
-  Scenario: Empty credentials are rejected
-    Given I am on the login page
-    When I submit empty credentials
-    Then I should see the login error "Username and password are required"
+    Examples:
+      | case               | username | password      | expected_message                  |
+      | Invalid password   | testuser | WrongPassword | Invalid username or password     |
+      | Empty credentials  |          |               | Username and password are required |

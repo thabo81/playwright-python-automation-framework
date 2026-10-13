@@ -22,13 +22,19 @@ Browser
 
 ## Login Feature
 
-The feature file is `features/login.feature`. It describes three authentication behaviours:
+The feature file is `features/login.feature`. It now uses two styles:
 
-1. Successful login redirects to the dashboard.
-2. An invalid password is rejected with a clear error.
-3. Empty credentials are rejected with a required-fields error.
+1. A standard `Scenario` verifies successful login.
+2. A `Scenario Outline` runs the same negative-login behaviour against multiple example rows.
 
-Gherkin describes expected behaviour, without embedding Playwright selectors or browser operations in the feature file.
+The Examples table currently supplies two negative cases:
+
+| Example | Username | Password | Expected result |
+|---|---|---|---|
+| Invalid password | `testuser` | `WrongPassword` | Invalid username or password |
+| Empty credentials | empty | empty | Username and password are required |
+
+The empty cells deliberately pass empty strings to the login form. This is useful for checking required-field validation without creating a separate step definition just for this input.
 
 ## Step Definitions and Plugin Registration
 
@@ -43,15 +49,15 @@ pytest_plugins = ("tests.bdd.step_defs.login_steps",)
 
 A normal Python import alone does not guarantee that a separate module's step functions are registered as Pytest fixtures. Registering the module as a plugin makes the step definitions discoverable by pytest-bdd.
 
-## Reusable Error Step
+## Scenario Outline and Examples
 
-Both negative scenarios use one parameterized Gherkin step:
+A `Scenario Outline` is a template. pytest-bdd executes the scenario once for each row in its `Examples` table.
 
-```gherkin
-Then I should see the login error "Invalid username or password"
-```
+The outline's placeholders (`<username>`, `<password>`, and `<expected_message>`) are substituted from the row before the matching step definitions execute.
 
-The step definition uses `parsers.parse(...)` to capture the quoted message as an argument. It passes that value to `LoginPage.assert_login_error()`, so the assertion and locator remain inside the Page Object.
+The step uses `parsers.re(...)` with named groups and a non-greedy match. This allows the username and password values to be empty strings. The expected error step uses `parsers.parse(...)` to capture the expected message.
+
+This is a small form of data-driven test design: the behaviour stays the same while the input data and expected result vary.
 
 ## Run the BDD Scenarios
 
@@ -67,13 +73,19 @@ Run scenarios tagged as BDD:
 pytest -m bdd -v
 ```
 
-Run the BDD smoke scenario:
+Run only the smoke scenario:
 
 ```bash
 pytest -m "bdd and smoke" -v
 ```
 
-The feature-level `@bdd` tag and scenario-level `@smoke` tag make it possible to select groups of behaviours when invoking Pytest.
+Run the negative-login outline:
+
+```bash
+pytest -m "bdd and negative" -v
+```
+
+The feature-level `@bdd` tag and scenario-level `@smoke` / `@negative` tags support selective execution.
 
 ## Methods and Pytest-BDD Constructs Used
 
@@ -83,6 +95,7 @@ The feature-level `@bdd` tag and scenario-level `@smoke` tag make it possible to
 | `@when(...)` | Maps a Gherkin When step to a Python function. |
 | `@then(...)` | Maps a Gherkin Then step to a Python function. |
 | `parsers.parse(...)` | Extracts a value from a parameterized step sentence. |
+| `parsers.re(...)` | Uses a regular expression and named groups to extract step arguments, including empty strings. |
 | `pytest_plugins` | Registers a separate module as a Pytest plugin. |
 | `scenarios(...)` | Generates Pytest test functions from scenarios in a feature file. |
 | `login_page.open(...)` | Navigates through the existing LoginPage Page Object. |
@@ -92,9 +105,9 @@ The feature-level `@bdd` tag and scenario-level `@smoke` tag make it possible to
 
 ## CI and Reporting
 
-GitHub Actions runs the complete Pytest suite, including BDD scenarios discovered under `tests/`. The workflow generates an Allure report and uploads the report and test evidence as artifacts even when the test step fails.
+GitHub Actions runs the full Pytest suite, including BDD scenarios discovered under `tests/`. The workflow generates an Allure report and uploads the report and test evidence as artifacts even when tests fail.
 
-The first BDD scenario was verified in CI as part of an eight-test pass. After adding invalid-password and empty-credentials scenarios, the full suite passed in GitHub Actions: **10 passed in 3.44 seconds**. The Allure report and test evidence artifacts were also uploaded successfully.
+The three BDD cases (one successful-login scenario and two negative-login examples) were previously verified in CI as part of a **10-test pass**. The Scenario Outline revision must also pass CI before this next learning milestone is considered complete.
 
 ## References
 

@@ -22,28 +22,26 @@ def user_logs_in_with_valid_credentials(
     """Submit the known valid test credentials."""
 
     # Keep the interaction in the Page Object so Gherkin steps
-    # describe the behaviour rather than selector implementation.
+    # describe behaviour rather than selector implementation.
     login_page.login("testuser", "Password123")
 
 
-@when("I log in with an invalid password")
-def user_logs_in_with_invalid_password(
+@when(
+    parsers.re(
+        r'I attempt to log in with username "(?P<username>.*?)" '
+        r'and password "(?P<password>.*?)"'
+    )
+)
+def user_attempts_login_with_credentials(
     login_page: LoginPage,
+    username: str,
+    password: str,
 ) -> None:
-    """Submit a valid username with an incorrect password."""
+    """Submit credentials supplied by the Scenario Outline Examples."""
 
-    # Exercise the negative authentication path using the same UI action.
-    login_page.login("testuser", "WrongPassword")
-
-
-@when("I submit empty credentials")
-def user_submits_empty_credentials(
-    login_page: LoginPage,
-) -> None:
-    """Submit the login form without a username or password."""
-
-    # Empty inputs verify that the app rejects missing required values.
-    login_page.login("", "")
+    # A non-greedy regex also accepts empty strings for negative test data,
+    # allowing the empty-credentials row to exercise required-field checks.
+    login_page.login(username, password)
 
 
 @then("I should be redirected to the dashboard")
@@ -52,10 +50,10 @@ def user_should_reach_dashboard(
 ) -> None:
     """Verify that successful authentication reaches the dashboard."""
 
-    # Wait for the navigation instead of adding an arbitrary sleep.
+    # Wait for navigation rather than relying on an arbitrary sleep.
     login_page.page.wait_for_url("**/dashboard")
 
-    # Confirm that the browser ended on the expected route.
+    # Confirm the browser ended on the expected route.
     assert login_page.page.url.endswith("/dashboard")
 
 
@@ -66,5 +64,5 @@ def user_should_see_login_error(
 ) -> None:
     """Verify the expected error text for a rejected login attempt."""
 
-    # Reuse the Page Object assertion for both negative scenarios.
+    # Reuse the Page Object assertion for both negative examples.
     login_page.assert_login_error(expected_message)
