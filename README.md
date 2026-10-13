@@ -188,7 +188,7 @@ GitHub Actions now automatically:
 7. Supports manual execution through `workflow_dispatch`.
 8. Cancels superseded runs for the same branch or pull request.
 
-The latest confirmed CI run executed **8 tests with 8 passed**, including the first BDD login scenario. The expanded suite now adds invalid-password and empty-credentials scenarios; this new revision must pass CI before we consider the expanded BDD milestone verified.
+The latest confirmed CI run executed **10 tests with 10 passed**, including all three BDD login scenarios (valid credentials, invalid password, and empty credentials). The expanded BDD suite has been verified in GitHub Actions.
 
 Target workflow:
 
@@ -240,7 +240,9 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Verify Pytest-BDD step discovery and run the first scenario successfully
 * [x] Create the first Cucumber-style Gherkin login feature and step definitions
 * [x] Add invalid-password and empty-credentials scenarios
-* [ ] Verify the expanded BDD scenarios through GitHub Actions
+* [x] Verify the expanded BDD scenarios through GitHub Actions
+* [ ] Add Scenario Outline / Examples for data-driven BDD tests
+* [ ] Verify Allure reporting and BDD tag filtering
 * [ ] Build a complete end-to-end automation project
 
 ## Testing Strategy

@@ -94,7 +94,7 @@ The feature-level `@bdd` tag and scenario-level `@smoke` tag make it possible to
 
 GitHub Actions runs the complete Pytest suite, including BDD scenarios discovered under `tests/`. The workflow generates an Allure report and uploads the report and test evidence as artifacts even when the test step fails.
 
-The first BDD scenario was verified in CI as part of an eight-test pass. The expanded negative-scenario suite must pass in its own workflow run before this milestone is considered complete.
+The first BDD scenario was verified in CI as part of an eight-test pass. After adding invalid-password and empty-credentials scenarios, the full suite passed in GitHub Actions: **10 passed in 3.44 seconds**. The Allure report and test evidence artifacts were also uploaded successfully.
 
 ## References
 
