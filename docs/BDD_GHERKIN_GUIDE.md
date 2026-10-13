@@ -49,7 +49,14 @@ The matching Python implementation lives in:
 
 The step definitions intentionally call the existing `LoginPage` Page Object instead of directly using selectors.
 
-The step functions must be imported into the scenario test module so pytest-bdd can discover the decorated Given/When/Then bindings. Importing only the step-definition module object is not sufficient for this arrangement.
+Because the step definitions live in a separate module, register that module as a Pytest plugin in `tests/bdd/test_login_bdd.py`:
+
+```python
+# Load the module so Pytest registers its decorated step definitions.
+pytest_plugins = ("tests.bdd.step_defs.login_steps",)
+```
+
+A normal Python import alone does not guarantee that fixtures defined in another module are registered with Pytest. The `pytest_plugins` setting registers the module as a plugin, making its step-definition fixtures discoverable. Pytest supports loading plugins from a test module; the plugin then provides the step fixtures used by the Gherkin scenario. citeturn356461search9
 
 This keeps the responsibilities separated:
 
