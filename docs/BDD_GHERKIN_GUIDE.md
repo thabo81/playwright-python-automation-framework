@@ -96,6 +96,7 @@ The feature-level `@bdd` tag and scenario-level `@smoke` / `@negative` tags supp
 | `@then(...)` | Maps a Gherkin Then step to a Python function. |
 | `parsers.parse(...)` | Extracts a value from a parameterized step sentence. |
 | `parsers.re(...)` | Uses a regular expression and named groups to extract step arguments, including empty strings. |
+| `Background` | Defines shared Given steps that run before each scenario in the feature. |
 | `pytest_plugins` | Registers a separate module as a Pytest plugin. |
 | `scenarios(...)` | Generates Pytest test functions from scenarios in a feature file. |
 | `login_page.open(...)` | Navigates through the existing LoginPage Page Object. |
@@ -107,7 +108,9 @@ The feature-level `@bdd` tag and scenario-level `@smoke` / `@negative` tags supp
 
 GitHub Actions runs the full Pytest suite, including BDD scenarios discovered under `tests/`. The workflow generates an Allure report and uploads the report and test evidence as artifacts even when tests fail.
 
-The three BDD cases (one successful-login scenario and two negative-login Examples) passed in GitHub Actions as part of a **10-test pass**. The workflow also verifies tag filtering by running the `bdd and smoke` selection separately from the `bdd and negative` selection. These targeted CI checks are intended to confirm that the smoke tag selects one case and the negative tag selects two cases.
+The three BDD cases (one successful-login scenario and two negative-login Examples) passed in GitHub Actions as part of a **10-test pass**. The workflow verifies tag filtering separately: `bdd and smoke` selected **1 passed, 2 deselected**, while `bdd and negative` selected **2 passed, 1 deselected**.
+
+The Allure HTML report was generated and uploaded successfully. Inspection of the report confirmed three distinct BDD result entries: the successful-login scenario and both Scenario Outline examples. The results carry the expected `bdd`, `smoke`, and `negative` tags, allowing the feature behaviour and example-specific results to be reviewed in the report.
 
 Allure result directories for the tag-filter checks are kept separate from the complete-suite results so the main HTML report continues to represent the full test run.
 
