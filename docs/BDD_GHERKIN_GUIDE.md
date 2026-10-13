@@ -1,8 +1,8 @@
 # BDD / Gherkin with Playwright
 
-This guide documents the BDD layer added to the Python + Pytest + Playwright framework.
+This guide documents the Cucumber-style BDD layer in the Python + Pytest + Playwright framework.
 
-The project uses **pytest-bdd** to provide a Cucumber-style Gherkin specification layer while continuing to use the existing Pytest fixtures and Playwright Page Objects.
+The project uses **pytest-bdd** to connect Gherkin feature files to Pytest fixtures and existing Playwright Page Objects. It complements ordinary Pytest UI/API tests; it does not replace them.
 
 ## Architecture
 
@@ -20,97 +20,84 @@ Playwright
 Browser
 ```
 
-BDD is an additional specification layer. It does not replace normal Pytest tests or API tests.
+## Login Feature
 
-## First Feature
+The feature file is `features/login.feature`. It describes three authentication behaviours:
 
-The first feature is:
+1. Successful login redirects to the dashboard.
+2. An invalid password is rejected with a clear error.
+3. Empty credentials are rejected with a required-fields error.
 
-`features/login.feature`
+Gherkin describes expected behaviour, without embedding Playwright selectors or browser operations in the feature file.
 
-It describes a successful user login in business-readable language:
+## Step Definitions and Plugin Registration
 
-```gherkin
-@bdd
-Feature: User login
+The Python implementations live in `tests/bdd/step_defs/login_steps.py`.
 
-  @smoke
-  Scenario: Successful login redirects to the dashboard
-    Given I am on the login page
-    When I log in with valid credentials
-    Then I should be redirected to the dashboard
-```
-
-## Step Definitions
-
-The matching Python implementation lives in:
-
-`tests/bdd/step_defs/login_steps.py`
-
-The step definitions intentionally call the existing `LoginPage` Page Object instead of directly using selectors.
-
-Because the step definitions live in a separate module, register that module as a Pytest plugin in `tests/bdd/test_login_bdd.py`:
+The scenario module `tests/bdd/test_login_bdd.py` registers the separate step-definition module using Pytest's `pytest_plugins` setting:
 
 ```python
-# Load the module so Pytest registers its decorated step definitions.
+# Register the module so Pytest can discover its decorated step definitions.
 pytest_plugins = ("tests.bdd.step_defs.login_steps",)
 ```
 
-A normal Python import alone does not guarantee that fixtures defined in another module are registered with Pytest. The `pytest_plugins` setting registers the module as a plugin, making its step-definition fixtures discoverable. Pytest supports loading plugins from a test module; the plugin then provides the step fixtures used by the Gherkin scenario. citeturn356461search9
+A normal Python import alone does not guarantee that a separate module's step functions are registered as Pytest fixtures. Registering the module as a plugin makes the step definitions discoverable by pytest-bdd.
 
-This keeps the responsibilities separated:
+## Reusable Error Step
 
-| Layer | Responsibility |
-|---|---|
-| Feature | Describe behaviour in business language |
-| Step definition | Translate behaviour into test actions |
-| Fixture | Provide reusable test context |
-| Page Object | Encapsulate Playwright locators/actions |
-| Playwright | Drive the browser |
+Both negative scenarios use one parameterized Gherkin step:
 
-## Running BDD Tests
+```gherkin
+Then I should see the login error "Invalid username or password"
+```
 
-Run the BDD test file:
+The step definition uses `parsers.parse(...)` to capture the quoted message as an argument. It passes that value to `LoginPage.assert_login_error()`, so the assertion and locator remain inside the Page Object.
+
+## Run the BDD Scenarios
+
+Run only the BDD scenario module:
 
 ```bash
 pytest tests/bdd/test_login_bdd.py -v
 ```
 
-Run only BDD scenarios using the marker:
+Run scenarios tagged as BDD:
 
 ```bash
 pytest -m bdd -v
 ```
 
-Run BDD smoke scenarios:
+Run the BDD smoke scenario:
 
 ```bash
 pytest -m "bdd and smoke" -v
 ```
 
-## Why pytest-bdd Instead of Replacing Pytest
+The feature-level `@bdd` tag and scenario-level `@smoke` tag make it possible to select groups of behaviours when invoking Pytest.
 
-pytest-bdd implements a subset of Gherkin and integrates with Pytest fixtures, allowing existing setup and test infrastructure to be reused. This makes it suitable for this Python Playwright framework without introducing a separate test runner. citeturn441412search2
+## Methods and Pytest-BDD Constructs Used
 
-The project is therefore using **Cucumber-style BDD**, rather than replacing the Python stack with a separate Cucumber runtime.
+| Method / construct | Purpose |
+|---|---|
+| `@given(...)` | Maps a Gherkin Given step to a Python function. |
+| `@when(...)` | Maps a Gherkin When step to a Python function. |
+| `@then(...)` | Maps a Gherkin Then step to a Python function. |
+| `parsers.parse(...)` | Extracts a value from a parameterized step sentence. |
+| `pytest_plugins` | Registers a separate module as a Pytest plugin. |
+| `scenarios(...)` | Generates Pytest test functions from scenarios in a feature file. |
+| `login_page.open(...)` | Navigates through the existing LoginPage Page Object. |
+| `login_page.login(...)` | Fills and submits the username and password fields. |
+| `login_page.assert_login_error(...)` | Checks visibility and exact text of the login error. |
+| `page.wait_for_url(...)` | Waits for the expected successful-login URL. |
 
-## Dependency
+## CI and Reporting
 
-The repository pins:
+GitHub Actions runs the complete Pytest suite, including BDD scenarios discovered under `tests/`. The workflow generates an Allure report and uploads the report and test evidence as artifacts even when the test step fails.
 
-```text
-pytest-bdd==9.0.0
-```
+The first BDD scenario was verified in CI as part of an eight-test pass. The expanded negative-scenario suite must pass in its own workflow run before this milestone is considered complete.
 
-Version 9.0.0 was released on September 30, 2026 and supports Python 3.10 through 3.14. citeturn441412search0turn441412search1
+## References
 
-## Next BDD Milestones
-
-1. Add successful-login scenario — completed.
-2. Add invalid-login scenario.
-3. Add empty-credentials scenario.
-4. Add Scenario Outline / Examples for reusable login data.
-5. Add BDD tags and selective execution.
-6. Verify Allure reporting for BDD scenarios.
-7. Execute BDD scenarios in GitHub Actions.
-8. Refine the framework structure after the BDD layer is stable.
+- pytest-bdd documentation: https://pytest-bdd.readthedocs.io/
+- Playwright Python CI: https://playwright.dev/python/docs/ci
+- GitHub Actions documentation: https://docs.github.com/actions
