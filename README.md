@@ -55,7 +55,7 @@ This improves readability, maintainability, and reusability as the test suite gr
 
 ### BDD / Gherkin
 
-The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. It covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. The Scenario Outline revision passed CI with **10 passed in 2.41 seconds**. The latest CI workflow also verified tag selection (smoke: 1 passed; negative: 2 passed) and produced an Allure report containing all three BDD results with their expected tags. A Gherkin Background now centralizes shared login setup and was verified by a successful CI run with 10 tests passing.
+The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. The login feature covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. The 10-test suite passed in CI, including BDD tag-selection checks and Allure reporting. A separate dashboard feature has now been added to validate authenticated dashboard access and the personalized welcome message; its CI verification is pending.
 
 The BDD layer is intended to demonstrate:
 
@@ -91,14 +91,17 @@ BDD will complement the existing Pytest tests rather than replace technical/API-
 ```text
 playwright-python-automation-framework/
 ├── features/
-│   └── login.feature
+│   ├── login.feature
+│   └── dashboard.feature
 ├── tests/
 │   ├── api/
 │   ├── ui/
 │   └── bdd/
 │       ├── step_defs/
-│       │   └── login_steps.py
-│       └── test_login_bdd.py
+│       │   ├── login_steps.py
+│       │   └── dashboard_steps.py
+│       ├── test_login_bdd.py
+│       └── test_dashboard_bdd.py
 ├── pages/
 ├── conftest.py
 ├── pytest.ini
@@ -246,6 +249,8 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Verify BDD tag filtering in GitHub Actions
 * [x] Inspect Allure report for Gherkin scenario names and labels
 * [x] Add and verify a Gherkin Background for shared login setup
+* [x] Add a separate dashboard feature using authenticated fixtures and the DashboardPage
+* [ ] Verify dashboard BDD scenarios through GitHub Actions
 * [ ] Build a complete end-to-end automation project
 
 ## Testing Strategy
