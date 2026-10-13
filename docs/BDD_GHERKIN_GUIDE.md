@@ -107,7 +107,9 @@ The feature-level `@bdd` tag and scenario-level `@smoke` / `@negative` tags supp
 
 GitHub Actions runs the full Pytest suite, including BDD scenarios discovered under `tests/`. The workflow generates an Allure report and uploads the report and test evidence as artifacts even when tests fail.
 
-The three BDD cases (one successful-login scenario and two negative-login examples) were previously verified in CI as part of a **10-test pass**. The Scenario Outline revision must also pass CI before this next learning milestone is considered complete.
+The three BDD cases (one successful-login scenario and two negative-login Examples) passed in GitHub Actions as part of a **10-test pass**. The workflow also verifies tag filtering by running the `bdd and smoke` selection separately from the `bdd and negative` selection. These targeted CI checks are intended to confirm that the smoke tag selects one case and the negative tag selects two cases.
+
+Allure result directories for the tag-filter checks are kept separate from the complete-suite results so the main HTML report continues to represent the full test run.
 
 ## References
 

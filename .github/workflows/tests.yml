@@ -61,6 +61,17 @@ jobs:
       - name: Run tests
         run: pytest --browser chromium --numprocesses 2
 
+      # Verify that BDD tags select only the intended Gherkin scenarios.
+      # Use separate Allure result folders so these targeted runs do not erase
+      # the complete-suite results used by the main HTML report.
+      - name: Verify BDD tag filtering
+        run: |
+          # Only the successful-login smoke scenario should run here.
+          pytest tests/bdd/test_login_bdd.py --browser chromium -m "bdd and smoke" --override-ini="addopts=-ra --tracing=retain-on-failure" --alluredir=allure-results-tag-smoke --clean-alluredir
+
+          # The two negative-login Examples should run here.
+          pytest tests/bdd/test_login_bdd.py --browser chromium -m "bdd and negative" --override-ini="addopts=-ra --tracing=retain-on-failure" --alluredir=allure-results-tag-negative --clean-alluredir
+
       # Build the HTML report even when one or more tests fail.
       - name: Generate Allure report
         if: ${{ always() }}
