@@ -55,7 +55,7 @@ This improves readability, maintainability, and reusability as the test suite gr
 
 ### BDD / Gherkin
 
-The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. It covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. The Scenario Outline revision passed CI with **10 passed in 2.41 seconds**. The latest CI workflow also verified tag selection (smoke: 1 passed; negative: 2 passed) and produced an Allure report containing all three BDD results with their expected tags. A Gherkin Background has now been added for shared login setup and is awaiting CI verification.
+The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. It covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. The Scenario Outline revision passed CI with **10 passed in 2.41 seconds**. The latest CI workflow also verified tag selection (smoke: 1 passed; negative: 2 passed) and produced an Allure report containing all three BDD results with their expected tags. A Gherkin Background now centralizes shared login setup and was verified by a successful CI run with 10 tests passing.
 
 The BDD layer is intended to demonstrate:
 
@@ -245,7 +245,7 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Verify the Scenario Outline revision in GitHub Actions
 * [x] Verify BDD tag filtering in GitHub Actions
 * [x] Inspect Allure report for Gherkin scenario names and labels
-* [ ] Add and verify a Gherkin Background for shared login setup
+* [x] Add and verify a Gherkin Background for shared login setup
 * [ ] Build a complete end-to-end automation project
 
 ## Testing Strategy
