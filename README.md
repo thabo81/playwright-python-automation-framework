@@ -55,9 +55,9 @@ This improves readability, maintainability, and reusability as the test suite gr
 
 ### BDD / Gherkin
 
-BDD will be added as the next learning milestone using **Cucumber-style Gherkin scenarios** with the Python testing ecosystem.
+The framework is **being extended with Cucumber-style Gherkin scenarios** using `pytest-bdd`. The first login feature and step definitions have been created; successful execution and CI verification are still in progress.
 
-The planned BDD layer will demonstrate:
+The BDD layer is intended to demonstrate:
 
 * Feature files written in Gherkin
 * Given / When / Then step definitions
@@ -86,32 +86,31 @@ Browser
 BDD will complement the existing Pytest tests rather than replace technical/API-level tests.
 
 
-## Planned Project Structure
+## Project Structure
 
 ```text
 playwright-python-automation-framework/
 ├── features/
-│   ├── login.feature
-│   └── dashboard.feature
-├── step_defs/
+│   └── login.feature
 ├── tests/
+│   ├── api/
 │   ├── ui/
-│   └── api/
+│   └── bdd/
+│       ├── step_defs/
+│       │   └── login_steps.py
+│       └── test_login_bdd.py
 ├── pages/
-├── fixtures/
-├── utils/
-├── test_data/
 ├── conftest.py
 ├── pytest.ini
 ├── requirements.txt
-├── .gitignore
-├── README.md
+├── docs/
+│   └── BDD_GHERKIN_GUIDE.md
 └── .github/
     └── workflows/
         └── tests.yml
 ```
 
-> The BDD directories above represent the planned architecture and will be added during the BDD integration milestone.
+As the BDD layer grows, we can add more feature files, scenarios, and shared step definitions.
 
 ## Getting Started
 
@@ -189,7 +188,7 @@ GitHub Actions now automatically:
 7. Supports manual execution through `workflow_dispatch`.
 8. Cancels superseded runs for the same branch or pull request.
 
-Verified CI result: the latest successful workflow executed **7 tests with 7 passed**.
+The latest confirmed pre-BDD CI run executed **7 tests with 7 passed**. The first BDD scenario has since been added, and its step-discovery issue is being corrected; the updated suite is not considered green until the new scenario passes in GitHub Actions.
 
 Target workflow:
 
@@ -238,9 +237,10 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Add parallel execution
 * [x] Add reporting and tracing
 * [x] Add GitHub Actions CI/CD and verify successful workflow execution
-* [x] Integrate BDD / Gherkin with Playwright
-* [x] Add the first Cucumber-style feature scenario and step definitions
-* [ ] Run BDD scenarios through GitHub Actions
+* [ ] Verify Pytest-BDD step discovery and run the first scenario successfully
+* [x] Create the first Cucumber-style Gherkin login feature and step definitions
+* [ ] Add invalid-password and empty-credentials scenarios
+* [ ] Run BDD scenarios successfully through GitHub Actions
 * [ ] Build a complete end-to-end automation project
 
 ## Testing Strategy
