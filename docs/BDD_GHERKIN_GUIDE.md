@@ -124,9 +124,9 @@ The feature-level `@bdd` tag and scenario-level `@smoke` / `@negative` tags supp
 
 GitHub Actions runs the full Pytest suite, including BDD scenarios discovered under `tests/`. The workflow generates an Allure report and uploads the report and test evidence as artifacts even when tests fail.
 
-The shared login Background and all three login BDD cases passed in GitHub Actions as part of a **10-test pass**. The new dashboard feature adds two more scenarios and will be considered verified when its workflow run passes. In the latest run, the full suite reported **10 passed in 3.43 seconds**. The workflow verifies tag filtering separately: `bdd and smoke` selected **1 passed, 2 deselected**, while `bdd and negative` selected **2 passed, 1 deselected**.
+The shared login Background, all three login BDD cases, and both dashboard BDD scenarios passed in GitHub Actions. Run #56 completed with **12 passed in 3.87 seconds** (two warnings). The workflow verifies login tag filtering separately: `bdd and smoke` selected **1 passed, 2 deselected**, while `bdd and negative` selected **2 passed, 1 deselected**.
 
-The Allure HTML report was generated and uploaded successfully. Inspection of the report confirmed three distinct BDD result entries: the successful-login scenario and both Scenario Outline examples. The results carry the expected `bdd`, `smoke`, and `negative` tags, allowing the feature behaviour and example-specific results to be reviewed in the report.
+The Allure HTML report and test-evidence artifacts were generated and uploaded successfully for the verified run. A previous report inspection confirmed three distinct login BDD result entries: the successful-login scenario and both Scenario Outline examples. The new dashboard feature adds two additional BDD results to the full suite.
 
 Allure result directories for the tag-filter checks are kept separate from the complete-suite results so the main HTML report continues to represent the full test run.
 

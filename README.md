@@ -55,7 +55,7 @@ This improves readability, maintainability, and reusability as the test suite gr
 
 ### BDD / Gherkin
 
-The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. The login feature covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. The 10-test suite passed in CI, including BDD tag-selection checks and Allure reporting. A separate dashboard feature has now been added to validate authenticated dashboard access and the personalized welcome message; its CI verification is pending.
+The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. The login feature covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. A separate dashboard feature validates authenticated dashboard access, its title, and the personalized welcome message. The complete 12-test suite passed in GitHub Actions, including dashboard BDD scenarios, tag-selection checks, Allure report generation, and evidence upload.
 
 The BDD layer is intended to demonstrate:
 
@@ -86,6 +86,10 @@ Browser
 BDD will complement the existing Pytest tests rather than replace technical/API-level tests.
 
 
+## Visual Regression and Accessibility Testing
+
+The approach for these future enhancements is documented in [Visual and Accessibility Testing Notes](docs/VISUAL_AND_ACCESSIBILITY_TESTING.md). This repository currently contains functional/UI/API checks and BDD examples; visual-baseline comparison and automated accessibility scanning have not been added yet.
+
 ## Project Structure
 
 ```text
@@ -107,7 +111,11 @@ playwright-python-automation-framework/
 ├── pytest.ini
 ├── requirements.txt
 ├── docs/
-│   └── BDD_GHERKIN_GUIDE.md
+│   ├── BDD_GHERKIN_GUIDE.md
+│   ├── VISUAL_AND_ACCESSIBILITY_TESTING.md
+│   ├── PLAYWRIGHT_METHOD_REFERENCE.md
+│   ├── GITHUB_ACTIONS_GUIDE.md
+│   └── ALLURE_REPORTING_GUIDE.md
 └── .github/
     └── workflows/
         └── tests.yml
@@ -191,7 +199,7 @@ GitHub Actions now automatically:
 7. Supports manual execution through `workflow_dispatch`.
 8. Cancels superseded runs for the same branch or pull request.
 
-The latest confirmed CI run executed **10 tests with 10 passed**, including all three BDD login scenarios (valid credentials, invalid password, and empty credentials). The expanded BDD suite has been verified in GitHub Actions.
+The latest confirmed CI run (#56) executed **12 tests: 12 passed in 3.87 seconds**, with two warnings. This includes all three login BDD cases and both dashboard BDD scenarios. The separate login tag checks also passed (smoke: 1 passed / 2 deselected; negative: 2 passed / 1 deselected). Allure report generation and test-evidence upload succeeded.
 
 Target workflow:
 
@@ -217,6 +225,7 @@ Use these references while working through the framework:
 
 * [Playwright & Pytest Method Reference](docs/PLAYWRIGHT_METHOD_REFERENCE.md) — methods already used, methods planned for later stages, and quick recall by task.
 * [GitHub Actions Setup Guide](docs/GITHUB_ACTIONS_GUIDE.md) — step-by-step instructions for writing, understanding, running, and debugging CI workflows.
+* [Visual and Accessibility Testing Notes](docs/VISUAL_AND_ACCESSIBILITY_TESTING.md) — screenshot baselines, visual-regression strategy, automated accessibility scans, and manual checks.
 
 ## Reporting & Test Evidence
 
@@ -250,8 +259,11 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Inspect Allure report for Gherkin scenario names and labels
 * [x] Add and verify a Gherkin Background for shared login setup
 * [x] Add a separate dashboard feature using authenticated fixtures and the DashboardPage
-* [ ] Verify dashboard BDD scenarios through GitHub Actions
-* [ ] Build a complete end-to-end automation project
+* [x] Verify dashboard BDD scenarios through GitHub Actions (12-test suite passed)
+* [x] Document visual-regression and accessibility-testing next steps
+* [ ] Select and implement a Python visual-regression comparison tool
+* [ ] Add automated accessibility scans and manual accessibility checks
+* [ ] Build a complete end-to-end automation project in a separate real-application suite
 
 ## Testing Strategy
 
@@ -264,6 +276,8 @@ The framework will apply core software testing principles such as:
 * Regression testing
 * End-to-end testing
 * API testing
+* Visual regression testing (documented next step; not yet implemented)
+* Accessibility testing (automated plus manual assessment; documented next step)
 * Risk-based test coverage
 
 BDD will add a business-readable specification layer on top of these technical testing practices.
@@ -287,6 +301,8 @@ This project focuses on:
 This repository is part of my **SDET portfolio** and demonstrates practical experience with:
 
 **Python + Pytest + Playwright + BDD/Gherkin + UI Automation + API Testing + Mocking + POM + CI/CD + Allure**
+
+Visual-regression and accessibility testing are documented as next quality-engineering extensions; they are not yet implemented in the current test suite.
 
 The repository will evolve as new automation concepts and projects are implemented.
 

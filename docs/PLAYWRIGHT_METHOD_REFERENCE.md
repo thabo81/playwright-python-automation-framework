@@ -321,3 +321,27 @@ Compare:
 
 Playwright's Python documentation recommends using `pytest-xdist` and the `--numprocesses` option for parallel test execution. 
 
+
+
+---
+
+# 14. Visual Regression and Accessibility Testing (Planned)
+
+The repository currently uses screenshots as debugging evidence and accessible locator patterns, but it does **not** yet contain a visual-baseline comparison suite or an automated accessibility scanner.
+
+| Method / concept | Purpose | Important distinction |
+|---|---|---|
+| `page.screenshot()` | Captures the current page as an image. | Capturing alone does not compare the image with a baseline. |
+| `locator.screenshot()` | Captures one component, such as a dashboard header. | Useful for smaller, stable visual targets. |
+| Approved baseline image | Defines expected rendering for a known browser and viewport. | Review baseline updates intentionally. |
+| Python-compatible image comparator | Compares current screenshots with approved baselines. | Select and validate a comparator before implementation. |
+| `Axe().run(page)` (optional package) | Runs an axe-core accessibility scan through `axe-playwright-python`. | Candidate third-party integration; not installed in current requirements. |
+| Manual keyboard / screen-reader checks | Finds usability and accessibility issues automated scans miss. | Required as a complement to automated checks. |
+
+**Visual testing guidance:** keep browser, viewport, device scale factor, fonts, theme, and data deterministic; wait for the desired UI state; disable animations or mask genuinely volatile regions where supported; review changed images before accepting a new baseline. Retain functional assertions because a matching screenshot cannot prove that the interface works.
+
+**Accessibility guidance:** scan representative pages and interactive states for issues such as missing accessible names, invalid ARIA, some contrast issues, and duplicate IDs. Automated scans detect only a subset of accessibility problems and do not establish full WCAG conformance. Agree the target WCAG version/level with the relevant stakeholders and supplement scans with keyboard, visible-focus, label/error-association, zoom/reflow, and screen-reader checks.
+
+**API compatibility note:** Playwright's JavaScript/TypeScript `toHaveScreenshot` assertion is part of the Playwright Test runner. This repository uses Python + Pytest, so do not copy that assertion directly. Python's `page.screenshot()` captures images; a Python-compatible comparison layer must be selected separately.
+
+See [Visual and Accessibility Testing Notes](VISUAL_AND_ACCESSIBILITY_TESTING.md) for examples and the planned implementation sequence.
