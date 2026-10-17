@@ -102,6 +102,9 @@ playwright-python-automation-framework/
 ├── tests/
 │   ├── api/
 │   ├── ui/
+│   ├── visual/
+│   ├── accessibility/
+│   ├── visual_baselines/
 │   └── bdd/
 │       ├── step_defs/
 │       │   ├── login_steps.py
