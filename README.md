@@ -27,6 +27,15 @@ The next portfolio stage—end-to-end automation against a real application—is
 * Pillow for screenshot comparison
 * axe-playwright-python / axe-core for automated accessibility scans
 
+## Book Study Guide
+
+The repository includes a code-free, chapter-by-chapter conceptual summary of *Web Automation with Playwright and Python using AI and MCP*, plus a dedicated Chapter 16 interview preparation guide.
+
+- [Full Book Theoretical Summary](docs/BOOK_THEORETICAL_SUMMARY.md) — foundational concepts, tools, design patterns, testing layers, AI/MCP, and best practices across all 16 chapters.
+- [Chapter 16 Interview Preparation](docs/CHAPTER_16_INTERVIEW_PREP.md) — model answers and interview questions organized into **Easy**, **Medium**, and **Hard** levels.
+
+These guides complement the practical method reference and implementation documents; they focus on explaining why the concepts matter and how to discuss the trade-offs in an SDET interview.
+
 ## What This Project Covers
 
 ### UI Automation
