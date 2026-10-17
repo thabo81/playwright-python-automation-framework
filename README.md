@@ -6,6 +6,12 @@ This repository documents my practical learning and implementation of modern web
 
 The goal is to build a maintainable, production-style automation framework rather than a collection of isolated scripts.
 
+## Current Project Status
+
+**This framework milestone is complete.** It includes UI and API automation, Page Object Model, fixtures, authentication state, API mocking, BDD/Gherkin, visual screenshot comparison, automated axe-core accessibility scanning, Allure reporting, Playwright tracing, and GitHub Actions CI. The complete suite and BDD tag checks passed in the latest verified workflow; Allure and test-evidence artifacts were uploaded.
+
+The next portfolio stage—end-to-end automation against a real application—is intentionally planned as a separate project and is not a blocker for completing this framework.
+
 ## Tech Stack
 
 * Python
@@ -265,12 +271,12 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Add and verify a Gherkin Background for shared login setup
 * [x] Add a separate dashboard feature using authenticated fixtures and the DashboardPage
 * [x] Verify dashboard BDD scenarios through GitHub Actions (12-test suite passed)
-* [x] Document visual-regression and accessibility-testing next steps
+* [x] Document visual-regression and accessibility-testing guidance
 * [x] Implement screenshot comparison against a committed dashboard baseline using Pillow
 * [x] Produce actual and highlighted diff screenshots when a visual check fails
 * [x] Add automated axe-core accessibility scanning to the dashboard test suite
 * [x] Document manual accessibility checks and baseline review/update governance
-* [ ] Build a complete end-to-end automation project in a separate real-application suite
+* [ ] Start a separate real-application end-to-end automation project (next portfolio project; outside this repository's scope)
 
 ## Testing Strategy
 
