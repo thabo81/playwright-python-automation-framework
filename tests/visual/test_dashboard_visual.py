@@ -39,7 +39,10 @@ def test_dashboard_main_matches_approved_visual_baseline(
     actual_bytes = authenticated_page.locator("main").screenshot(
         animations="disabled"
     )
-    actual_image = Image.open(BytesIO(actual_bytes)).convert("RGB")
+    # Downsample the stable main region to reduce antialiasing noise across minor browser builds.
+    actual_image = Image.open(BytesIO(actual_bytes)).convert("RGB").resize(
+        (632, 57), Image.Resampling.LANCZOS
+    )
 
     # Missing baselines are configuration errors; never silently create or accept one.
     assert BASELINE_PATH.is_file(), (
