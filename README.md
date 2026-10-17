@@ -55,7 +55,7 @@ This improves readability, maintainability, and reusability as the test suite gr
 
 ### BDD / Gherkin
 
-The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. The login feature covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. A separate dashboard feature validates authenticated dashboard access, its title, and the personalized welcome message. The complete 12-test suite passed in GitHub Actions, including dashboard BDD scenarios, tag-selection checks, Allure report generation, and evidence upload.
+The framework includes a Cucumber-style Gherkin layer using `pytest-bdd`. The login feature covers successful login plus a data-driven Scenario Outline for invalid-password and empty-credentials cases. A separate dashboard feature validates authenticated dashboard access, its title, and the personalized welcome message. The BDD milestone was verified in GitHub Actions with dashboard scenarios, tag-selection checks, Allure report generation, and evidence upload.
 
 The BDD layer is intended to demonstrate:
 

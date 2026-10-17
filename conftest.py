@@ -7,6 +7,17 @@ from threading import Thread
 import pytest
 from playwright.sync_api import Page
 
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    # Only update approved visual baselines when a developer opts in explicitly.
+    parser.addoption(
+        "--update-visual-baselines",
+        action="store_true",
+        default=False,
+        help="Regenerate visual baselines; review the images before committing them.",
+    )
+
+
 from pages.dashboard_page import DashboardPage
 from pages.home_page import HomePage
 from pages.login_page import LoginPage

@@ -23,6 +23,7 @@ MAX_CHANGED_PIXEL_RATIO = 0.002
 def test_dashboard_main_matches_approved_visual_baseline(
     authenticated_page: Page,
     test_app_url: str,
+    request: pytest.FixtureRequest,
 ) -> None:
     """Compare the rendered dashboard main region with the approved baseline."""
     # Fix the viewport so the baseline and current screenshot have matching geometry.
@@ -43,6 +44,14 @@ def test_dashboard_main_matches_approved_visual_baseline(
     actual_image = Image.open(BytesIO(actual_bytes)).convert("RGB").resize(
         (632, 57), Image.Resampling.LANCZOS
     )
+
+    # Regeneration is an explicit local action, never an automatic CI fallback.
+    if request.config.getoption("--update-visual-baselines"):
+        BASELINE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        actual_image.save(BASELINE_PATH)
+        pytest.skip(
+            f"Visual baseline regenerated at {BASELINE_PATH}; review and commit it."
+        )
 
     # Missing baselines are configuration errors; never silently create or accept one.
     assert BASELINE_PATH.is_file(), (
