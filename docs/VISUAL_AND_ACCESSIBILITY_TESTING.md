@@ -1,6 +1,6 @@
-# Visual Regression and Accessibility Testing Notes
+# Visual Regression and Accessibility Testing
 
-These notes define the next quality-engineering extensions for the Python + Pytest + Playwright learning framework. They are **documented learning goals, not implemented test capabilities** in the current suite.
+This guide documents the implemented dashboard visual-regression and automated accessibility checks, along with their limitations and the manual review practices that should accompany them. The project uses Python + Pytest + Playwright.
 
 ## 1. Visual regression testing
 
@@ -56,14 +56,14 @@ def test_capture_dashboard_screenshot(
 - `page.screenshot(...)`: saves a screenshot to a file.
 - `tmp_path`: Pytest's per-test temporary directory fixture.
 
-### How a real visual-regression check should work
+### Implemented visual-regression check
 
-1. **Choose a Python-compatible comparator.** The current repository uses Python + Pytest. Do not copy JavaScript/TypeScript Playwright Test's `expect(page).toHaveScreenshot()` API directly into the Python suite; that built-in screenshot assertion belongs to the Playwright Test runner.
-2. **Create and review baselines** in a controlled environment, then store them in a dedicated snapshots/baselines directory.
-3. **Make rendering deterministic:** pin browser/OS versions where possible, use a fixed viewport and device scale factor, use stable test data, and wait for images/fonts/content to finish loading.
-4. **Manage noise carefully:** disable animations and mask volatile content such as timestamps only when those areas are not the subject of the test.
-5. **Review diffs before updating a baseline.** An intentional UI change should be approved; never auto-accept all changed snapshots just to make CI green.
-6. **Retain functional checks.** Pixel similarity does not verify navigation, accessibility, form validation, or business behaviour.
+1. The test is in `tests/visual/test_dashboard_visual.py`; its approved baseline is `tests/visual_baselines/dashboard.png`.
+2. The test fixes the viewport at 1280 × 720, waits for dashboard content, disables animations, and captures the `main` region.
+3. Pillow compares the current screenshot with the baseline. Pixels with a grayscale difference above 30 are counted, and the test fails when more than 0.2% of pixels exceed that threshold.
+4. On a mismatch, the test writes `dashboard-actual.png` and `dashboard-diff.png` under `test-results/visual-diff/`. The CI workflow uploads `test-results/` even when tests fail.
+5. Baselines must be deliberately reviewed and updated in the same browser/OS environment used by CI. Never auto-accept a changed baseline merely to make CI green.
+6. This is a focused demonstration for the stable dashboard main region, not comprehensive coverage of every page, browser, or viewport. Pixel comparison complements functional assertions; it does not replace them.
 
 ### Common failure modes
 
@@ -77,11 +77,11 @@ def test_capture_dashboard_screenshot(
 
 Accessibility testing (often shortened to *a11y*) assesses whether people with differing abilities can perceive, understand, navigate, and operate the interface. It should be treated as a combination of automated testing, manual assessment, and, where practical, feedback from users with disabilities.
 
-### Automated scanning option for Python
+### Implemented automated scan for Python
 
-Playwright's official accessibility guide demonstrates axe using the JavaScript package `@axe-core/playwright`. For a Python + Pytest framework, `axe-playwright-python` is a possible third-party integration. It is a community package, not an official Microsoft Playwright component. Check its current maintenance, version compatibility, dependencies, and result format before adding it to `requirements.txt`.
+The test in `tests/accessibility/test_dashboard_accessibility.py` uses `axe-playwright-python==0.1.8` to run axe-core against the authenticated dashboard. This is a third-party community integration, not an official Microsoft Playwright component. The test fails when axe reports violations and includes the scanner response in the failure message.
 
-Illustrative test shape, **after installing and validating the optional package**:
+The implemented test follows this pattern:
 
 ```python
 from playwright.sync_api import Page
@@ -111,7 +111,7 @@ def test_dashboard_has_no_automated_accessibility_violations(
 - `results.violations_count`: reads the reported count of detected violations in the package's documented usage.
 - `assert ... , results.response`: fails with scan details available for investigation.
 
-Validate this example against the exact package version you install. Scan pages after reaching the relevant state; for example, open a menu or validation panel before scanning if that state needs coverage.
+The dependency is pinned in `requirements.txt`. Scan each relevant page state explicitly; for example, open a menu or validation panel before scanning if that state needs coverage.
 
 ### What automated scans can and cannot do
 

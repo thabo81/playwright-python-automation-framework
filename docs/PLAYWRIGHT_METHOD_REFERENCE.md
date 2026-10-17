@@ -1,6 +1,6 @@
 # Playwright & Pytest Method Reference
 
-This document is the learning reference for the automation framework. It records methods already used in the repository and the methods planned for later roadmap stages.
+This document is the learning reference for the automation framework. It records methods already used in the repository and methods planned for later roadmap stages.
 
 The project uses the Playwright Python synchronous API with Pytest.
 
@@ -66,6 +66,25 @@ The framework has already used page.route() to intercept an API request and rout
 | route.fulfill() | Replaces the real response with a mocked response. |
 
 ---
+
+### Visual Regression (Pillow)
+
+| Method / object | What it does | Example |
+|---|---|---|
+| `Image.open()` | Loads a baseline or screenshot image for comparison. | `Image.open(BASELINE_PATH)` |
+| `ImageChops.difference()` | Calculates per-pixel differences between two images. | `ImageChops.difference(baseline, actual)` |
+| `Image.convert("L")` | Converts image data to grayscale for thresholding. | `difference.convert("L")` |
+| `Image.point()` | Applies a per-pixel threshold function. | `mask = diff.point(lambda value: 255 if value > 30 else 0)` |
+| `Image.composite()` | Highlights changed pixels in a review image. | `Image.composite(highlight, actual, mask)` |
+
+### Accessibility Scanning (axe-playwright-python)
+
+| Method / property | What it does | Example |
+|---|---|---|
+| `Axe()` | Creates the axe-core Playwright wrapper. | `axe = Axe()` |
+| `axe.run(page)` | Scans the current page state for accessibility issues. | `results = axe.run(page)` |
+| `results.violations_count` | Returns the count of detected violations. | `assert results.violations_count == 0` |
+| `results.response` | Provides scanner response details for triage. | `assert not results.violations_count, results.response` |
 
 ## 2. Pytest Features Already Used
 

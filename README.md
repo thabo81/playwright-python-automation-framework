@@ -88,7 +88,7 @@ BDD will complement the existing Pytest tests rather than replace technical/API-
 
 ## Visual Regression and Accessibility Testing
 
-The approach for these future enhancements is documented in [Visual and Accessibility Testing Notes](docs/VISUAL_AND_ACCESSIBILITY_TESTING.md). This repository currently contains functional/UI/API checks and BDD examples; visual-baseline comparison and automated accessibility scanning have not been added yet.
+The framework now includes a screenshot-baseline comparison for the authenticated dashboard and an automated axe-core accessibility scan. Visual mismatches produce actual/diff images under `test-results/visual-diff/`; the CI workflow uploads these files with the other test evidence. See [Visual and Accessibility Testing](docs/VISUAL_AND_ACCESSIBILITY_TESTING.md) for baseline governance, scan limitations, and manual checks.
 
 ## Project Structure
 
@@ -199,7 +199,7 @@ GitHub Actions now automatically:
 7. Supports manual execution through `workflow_dispatch`.
 8. Cancels superseded runs for the same branch or pull request.
 
-The latest confirmed CI run (#56) executed **12 tests: 12 passed in 3.87 seconds**, with two warnings. This includes all three login BDD cases and both dashboard BDD scenarios. The separate login tag checks also passed (smoke: 1 passed / 2 deselected; negative: 2 passed / 1 deselected). Allure report generation and test-evidence upload succeeded.
+The CI workflow runs the complete Pytest suite, separately verifies BDD tag filtering, generates an Allure HTML report, and uploads Allure results plus Playwright and visual-diff evidence. The latest execution status is available in [GitHub Actions](https://github.com/thabo81/playwright-python-automation-framework/actions).
 
 Target workflow:
 
@@ -261,8 +261,10 @@ The framework uses **Allure Report** for structured test reporting and **Playwri
 * [x] Add a separate dashboard feature using authenticated fixtures and the DashboardPage
 * [x] Verify dashboard BDD scenarios through GitHub Actions (12-test suite passed)
 * [x] Document visual-regression and accessibility-testing next steps
-* [ ] Select and implement a Python visual-regression comparison tool
-* [ ] Add automated accessibility scans and manual accessibility checks
+* [x] Implement screenshot comparison against a committed dashboard baseline using Pillow
+* [x] Produce actual and highlighted diff screenshots when a visual check fails
+* [x] Add automated axe-core accessibility scanning to the dashboard test suite
+* [x] Document manual accessibility checks and baseline review/update governance
 * [ ] Build a complete end-to-end automation project in a separate real-application suite
 
 ## Testing Strategy
@@ -276,8 +278,8 @@ The framework will apply core software testing principles such as:
 * Regression testing
 * End-to-end testing
 * API testing
-* Visual regression testing (documented next step; not yet implemented)
-* Accessibility testing (automated plus manual assessment; documented next step)
+* Visual regression testing (dashboard screenshot baseline comparison)
+* Accessibility testing (automated axe-core scan plus documented manual assessment)
 * Risk-based test coverage
 
 BDD will add a business-readable specification layer on top of these technical testing practices.
@@ -302,7 +304,7 @@ This repository is part of my **SDET portfolio** and demonstrates practical expe
 
 **Python + Pytest + Playwright + BDD/Gherkin + UI Automation + API Testing + Mocking + POM + CI/CD + Allure**
 
-Visual-regression and accessibility testing are documented as next quality-engineering extensions; they are not yet implemented in the current test suite.
+Visual-regression comparison and automated accessibility scanning are implemented for the demo dashboard. These checks complement functional tests; they do not replace full manual accessibility assessment or comprehensive visual coverage across a real application.
 
 The repository will evolve as new automation concepts and projects are implemented.
 

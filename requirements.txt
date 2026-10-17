@@ -4,3 +4,5 @@ pytest-playwright>=0.7,<1
 pytest-xdist>=3.8,<4
 allure-pytest==2.16.2
 pytest-bdd==9.0.0
+Pillow>=10.4,<13
+axe-playwright-python==0.1.8
