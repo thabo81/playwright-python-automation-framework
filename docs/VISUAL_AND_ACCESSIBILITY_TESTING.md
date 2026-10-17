@@ -64,7 +64,7 @@ def test_capture_dashboard_screenshot(
 4. On a mismatch, the test writes `dashboard-actual.png` and `dashboard-diff.png` under `test-results/visual-diff/`. The CI workflow uploads `test-results/` even when tests fail.
 5. Baselines must be deliberately reviewed and updated in the same browser/OS environment used by CI. Never auto-accept a changed baseline merely to make CI green.
 6. After an intentional UI change, regenerate the dashboard baseline explicitly with `pytest tests/visual/test_dashboard_visual.py --browser chromium --update-visual-baselines`. The test will skip after writing the file; inspect the image and commit it only after review. Do not pass this option in CI.
-6. This is a focused demonstration for the stable dashboard main region, not comprehensive coverage of every page, browser, or viewport. Pixel comparison complements functional assertions; it does not replace them.
+7. This is a focused demonstration for the stable dashboard main region, not comprehensive coverage of every page, browser, or viewport. Pixel comparison complements functional assertions; it does not replace them.
 
 ### Common failure modes
 

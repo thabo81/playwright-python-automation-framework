@@ -18,6 +18,8 @@ The goal is to build a maintainable, production-style automation framework rathe
 * Page Object Model (POM)
 * Pytest-BDD / Gherkin
 * Allure Report
+* Pillow for screenshot comparison
+* axe-playwright-python / axe-core for automated accessibility scans
 
 ## What This Project Covers
 
@@ -225,7 +227,7 @@ Use these references while working through the framework:
 
 * [Playwright & Pytest Method Reference](docs/PLAYWRIGHT_METHOD_REFERENCE.md) — methods already used, methods planned for later stages, and quick recall by task.
 * [GitHub Actions Setup Guide](docs/GITHUB_ACTIONS_GUIDE.md) — step-by-step instructions for writing, understanding, running, and debugging CI workflows.
-* [Visual and Accessibility Testing Notes](docs/VISUAL_AND_ACCESSIBILITY_TESTING.md) — screenshot baselines, visual-regression strategy, automated accessibility scans, and manual checks.
+* [Visual and Accessibility Testing](docs/VISUAL_AND_ACCESSIBILITY_TESTING.md) — implemented screenshot comparison, baseline updates, automated axe-core scans, and manual checks.
 
 ## Reporting & Test Evidence
 
